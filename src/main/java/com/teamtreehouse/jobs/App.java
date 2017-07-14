@@ -24,7 +24,10 @@ public class App {
     }
 
     private static void explore(List<Job> jobs) {
-        // Your amazing code below...
-        System.out.println("Hi mom!");
+        for (Job job : jobs) {
+            if (job.getState().equals("OR") && job.getCity().equals("Portland")) {
+                System.out.println(job);
+            }
+        }
     }
 }
