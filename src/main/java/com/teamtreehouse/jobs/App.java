@@ -24,6 +24,10 @@ public class App {
     }
 
     private static void explore(List<Job> jobs) {
+        printPortlandJobsImperatively(jobs);
+    }
+
+    private static void printPortlandJobsImperatively(List<Job> jobs) {
         for (Job job : jobs) {
             if (job.getState().equals("OR") && job.getCity().equals("Portland")) {
                 System.out.println(job);
