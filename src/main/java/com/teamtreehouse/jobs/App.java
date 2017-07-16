@@ -4,12 +4,10 @@ import com.teamtreehouse.jobs.model.Job;
 import com.teamtreehouse.jobs.service.JobService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class App {
@@ -41,15 +39,28 @@ public class App {
 
 //        makeStreamWithoutCollection();
 
-        getSnippetWordCountsImperatively(jobs)
-                .forEach((key, value) -> System.out.printf("%n'%s' occurs %d times", key, value));
+//        getSnippetWordCountsImperatively(jobs)
+//                .forEach((key, value) -> System.out.printf("%n'%s' occurs %d times", key, value));
+//        getSnippetWordCountsStream(jobs)
+//                .forEach((key, value) -> System.out.printf("%n'%s' occurs %d times", key, value));
+
+        printLongestCompanyName(jobs);
+    }
+
+    // Reduction operation
+    private static void printLongestCompanyName(List<Job> jobs) {
+        System.out.println(
+                jobs.stream()
+                        .map(Job::getCompany)
+                        .max(Comparator.comparingInt(String::length))
+        );
     }
 
     /*
     Job / snippet / This is a job
     Job / snippet / Also a job
      */
-    public static Map<String, Long> getSnippetWordCountsStream(List<Job> jobs) {
+    private static Map<String, Long> getSnippetWordCountsStream(List<Job> jobs) {
         return jobs.stream()
                 .map(Job::getSnippet)
                 .map(snippet -> snippet.split("\\W"))
@@ -62,7 +73,7 @@ public class App {
                 ));
     }
 
-    public static Map<String, Long> getSnippetWordCountsImperatively(List<Job> jobs) {
+    private static Map<String, Long> getSnippetWordCountsImperatively(List<Job> jobs) {
 
         Map<String, Long> wordCounts = new HashMap<>();
 
