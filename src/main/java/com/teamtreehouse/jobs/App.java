@@ -5,7 +5,10 @@ import com.teamtreehouse.jobs.service.JobService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,9 +39,55 @@ public class App {
 //        getCaptionsImperatively(jobs).forEach(System.out::println);
 //        getCaptionsStream(jobs).forEach(System.out::println);
 
+//        makeStreamWithoutCollection();
+
+        getSnippetWordCountsImperatively(jobs)
+                .forEach((key, value) -> System.out.printf("%n'%s' occurs %d times", key, value));
+    }
+
+    /*
+    Job / snippet / This is a job
+    Job / snippet / Also a job
+     */
+    public static Map<String, Long> getSnippetWordCountsStream(List<Job> jobs) {
+        return jobs.stream()
+                .map(Job::getSnippet)
+                .map(snippet -> snippet.split("\\W"))
+                .flatMap(Stream::of)
+                .filter(word -> word.length() > 0)
+                .map(String::toLowerCase)
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.counting()
+                ));
+    }
+
+    public static Map<String, Long> getSnippetWordCountsImperatively(List<Job> jobs) {
+
+        Map<String, Long> wordCounts = new HashMap<>();
+
+        for (Job job : jobs) {
+            String[] words = job.getSnippet().split("\\W+");
+            for (String word : words) {
+                if (word.length() == 0) {
+                    continue;
+                }
+                String lWord = word.toLowerCase();
+                Long count = wordCounts.get(lWord);
+                if (count == null) {
+                    count = 0L;
+                }
+                wordCounts.put(lWord, ++count);
+            }
+        }
+        return wordCounts;
+    }
+
+    private static void makeStreamWithoutCollection() {
         Stream.of("hello", "this", "is", "a", "stream")
                 .forEach(System.out::println);
     }
+
 
     private static boolean isJuniorJob(Job job) {
         String title = job.getTitle().toLowerCase();
