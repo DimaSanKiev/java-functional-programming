@@ -66,8 +66,7 @@ public class App {
     private static List<String> getCaptionsStream(List<Job> jobs) {
         return jobs.stream()
                 .filter(App::isJuniorJob)
-                .map(job -> String.format("%s is looking for a %s in %s",
-                        job.getCompany(), job.getTitle(), job.getCity()))
+                .map(Job::getCaption)
                 .limit(3)
                 .collect(Collectors.toList());
     }
@@ -76,10 +75,7 @@ public class App {
         List<String> captions = new ArrayList<>();
         for (Job job : jobs) {
             if (isJuniorJob(job)) {
-                String caption = String.format("%s is looking for a %s in %s",
-                        job.getCompany(), job.getTitle(), job.getCity()
-                );
-                captions.add(caption);
+                captions.add(job.getCaption());
                 if (captions.size() >= 3) {
                     break;
                 }
