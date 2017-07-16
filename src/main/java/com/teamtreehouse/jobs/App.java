@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class App {
 
@@ -33,7 +34,10 @@ public class App {
 //        getThreeJuniorJobsStream(jobs).forEach(System.out::println);
 
 //        getCaptionsImperatively(jobs).forEach(System.out::println);
-        getCaptionsStream(jobs).forEach(System.out::println);
+//        getCaptionsStream(jobs).forEach(System.out::println);
+
+        Stream.of("hello", "this", "is", "a", "stream")
+                .forEach(System.out::println);
     }
 
     private static boolean isJuniorJob(Job job) {
