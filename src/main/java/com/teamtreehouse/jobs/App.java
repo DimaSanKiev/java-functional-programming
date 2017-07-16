@@ -28,8 +28,12 @@ public class App {
     private static void explore(List<Job> jobs) {
 //        printPortlandJobsImperatively(jobs);
 //        printPortlandJobsStream(jobs);
+
 //        getThreeJuniorJobsImperatively(jobs).forEach(System.out::println);
-        getThreeJuniorJobsStream(jobs).forEach(System.out::println);
+//        getThreeJuniorJobsStream(jobs).forEach(System.out::println);
+
+//        getCaptionsImperatively(jobs).forEach(System.out::println);
+        getCaptionsStream(jobs).forEach(System.out::println);
     }
 
     private static boolean isJuniorJob(Job job) {
@@ -57,6 +61,31 @@ public class App {
             }
         }
         return juniorJobs;
+    }
+
+    private static List<String> getCaptionsStream(List<Job> jobs) {
+        return jobs.stream()
+                .filter(App::isJuniorJob)
+                .map(job -> String.format("%s is looking for a %s in %s",
+                        job.getCompany(), job.getTitle(), job.getCity()))
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
+    private static List<String> getCaptionsImperatively(List<Job> jobs) {
+        List<String> captions = new ArrayList<>();
+        for (Job job : jobs) {
+            if (isJuniorJob(job)) {
+                String caption = String.format("%s is looking for a %s in %s",
+                        job.getCompany(), job.getTitle(), job.getCity()
+                );
+                captions.add(caption);
+                if (captions.size() >= 3) {
+                    break;
+                }
+            }
+        }
+        return captions;
     }
 
     private static void printPortlandJobsStream(List<Job> jobs) {
