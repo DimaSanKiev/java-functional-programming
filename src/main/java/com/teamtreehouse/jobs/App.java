@@ -4,7 +4,9 @@ import com.teamtreehouse.jobs.model.Job;
 import com.teamtreehouse.jobs.service.JobService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class App {
 
@@ -26,6 +28,35 @@ public class App {
     private static void explore(List<Job> jobs) {
 //        printPortlandJobsImperatively(jobs);
 //        printPortlandJobsStream(jobs);
+//        getThreeJuniorJobsImperatively(jobs).forEach(System.out::println);
+        getThreeJuniorJobsStream(jobs).forEach(System.out::println);
+    }
+
+    private static boolean isJuniorJob(Job job) {
+        String title = job.getTitle().toLowerCase();
+        return title.contains("junior") || title.contains("jr");
+    }
+
+    // "Senior Dev", "Jr. Java Engineer", "Java Evangelist", "Junior Java Dev", "Sr. Java Wizard Ninja",
+    // "Junior Java Wizard Ninja", "Full Stack Java Engineer"
+    private static List<Job> getThreeJuniorJobsStream(List<Job> jobs) {
+        return jobs.stream()
+                .filter(App::isJuniorJob)  // Predicate<Job>
+                .limit(3)   // intermediate method on streams
+                .collect(Collectors.toList());
+    }
+
+    private static List<Job> getThreeJuniorJobsImperatively(List<Job> jobs) {
+        List<Job> juniorJobs = new ArrayList<>();
+        for (Job job : jobs) {
+            if (isJuniorJob(job)) {
+                juniorJobs.add(job);
+                if (juniorJobs.size() >= 3) {
+                    break;
+                }
+            }
+        }
+        return juniorJobs;
     }
 
     private static void printPortlandJobsStream(List<Job> jobs) {
