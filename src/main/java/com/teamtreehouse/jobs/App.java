@@ -55,7 +55,18 @@ public class App {
                 .sorted()
                 .collect(Collectors.toList());
 //        displayCompaniesMenuImperatively(companies);
-        displayCompaniesMenuUsingRange(companies);
+//        displayCompaniesMenuUsingRange(companies);
+
+        int pageSize = 20;
+        int numPages = companies.size() / pageSize;
+        displayCompaniesPaging(companies, pageSize, numPages);
+    }
+
+    private static void displayCompaniesPaging(List<String> companies, int pageSize, int numPages) {
+        IntStream.iterate(1, i -> i + pageSize)
+                .mapToObj(i -> String.format("%d. %s", i, companies.get(i)))
+                .limit(numPages)
+                .forEach(System.out::println);
     }
 
     private static void displayCompaniesMenuUsingRange(List<String> companies) {
