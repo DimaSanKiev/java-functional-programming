@@ -44,7 +44,24 @@ public class App {
 //        getSnippetWordCountsStream(jobs)
 //                .forEach((key, value) -> System.out.printf("%n'%s' occurs %d times", key, value));
 
-        printLongestCompanyName(jobs);
+//        printLongestCompanyName(jobs);
+
+//        String searchTerm = "Java";
+//        optionalLuckySearchJob(jobs, searchTerm);
+        
+    }
+
+    private static void optionalLuckySearchJob(List<Job> jobs, String searchTerm) {
+        Optional<Job> foundJob = luckySearchJob(jobs, searchTerm);
+        System.out.println(foundJob
+                .map(Job::getTitle)
+                .orElse("No job found"));
+    }
+
+    private static Optional<Job> luckySearchJob(List<Job> jobs, String searchTerm) {
+        return jobs.stream()
+                .filter(job -> job.getTitle().contains(searchTerm))
+                .findFirst();
     }
 
     // Reduction operation
