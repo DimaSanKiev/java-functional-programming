@@ -6,6 +6,7 @@ import com.teamtreehouse.jobs.service.JobService;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -49,11 +50,11 @@ public class App {
 //        String searchTerm = "Java";
 //        optionalLuckySearchJob(jobs, searchTerm);
 
-        List<String> companies = jobs.stream()
-                .map(Job::getCompany)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
+//        List<String> companies = jobs.stream()
+//                .map(Job::getCompany)
+//                .distinct()
+//                .sorted()
+//                .collect(Collectors.toList());
 //        displayCompaniesMenuImperatively(companies);
 //        displayCompaniesMenuUsingRange(companies);
 
@@ -61,8 +62,26 @@ public class App {
 //        int numPages = companies.size() / pageSize;
 //        displayCompaniesPaging(companies, pageSize, numPages);
 
-        String search = "N";
-        getCompaniesThatStartWith(companies, search);
+//        String search = "N";
+//        getCompaniesThatStartWith(companies, search);
+
+        getJuniorJobsCalifornia(jobs);
+    }
+
+    // Higher Order Function
+    private static void getJuniorJobsCalifornia(List<Job> jobs) {
+        Predicate<Job> caJobChecker = job -> job.getState().equals("CA");
+        Job caJob = jobs.stream()
+                .filter(caJobChecker)
+                .findFirst()
+                .orElseThrow(NullPointerException::new);
+        emailIfMatches(caJob, caJobChecker.and(App::isJuniorJob));
+    }
+
+    private static void emailIfMatches(Job job, Predicate<Job> checker) {
+        if (checker.test(job)) {
+            System.out.println("I am sending email about " + job);
+        }
     }
 
     // Side effect demonstration
