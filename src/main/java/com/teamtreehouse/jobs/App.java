@@ -57,14 +57,25 @@ public class App {
 //        displayCompaniesMenuImperatively(companies);
 //        displayCompaniesMenuUsingRange(companies);
 
-        int pageSize = 20;
-        int numPages = companies.size() / pageSize;
-        displayCompaniesPaging(companies, pageSize, numPages);
+//        int pageSize = 20;
+//        int numPages = companies.size() / pageSize;
+//        displayCompaniesPaging(companies, pageSize, numPages);
+
+        String search = "N";
+        getCompaniesThatStartWith(companies, search);
+    }
+
+    // Side effect demonstration
+    private static void getCompaniesThatStartWith(List<String> companies, String search) {
+        companies.stream()
+                .peek(company -> System.out.println("=====>" + company))
+                .filter(company -> company.startsWith(search))
+                .forEach(System.out::println);
     }
 
     private static void displayCompaniesPaging(List<String> companies, int pageSize, int numPages) {
         IntStream.iterate(1, i -> i + pageSize)
-                .mapToObj(i -> String.format("%d. %s", i, companies.get(i)))
+                .mapToObj(i -> String.format("%d. %s", i, companies.get(i - 1)))
                 .limit(numPages)
                 .forEach(System.out::println);
     }
