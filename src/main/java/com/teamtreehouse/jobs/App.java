@@ -4,6 +4,8 @@ import com.teamtreehouse.jobs.model.Job;
 import com.teamtreehouse.jobs.service.JobService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -65,7 +67,29 @@ public class App {
 //        String search = "N";
 //        getCompaniesThatStartWith(companies, search);
 
-        getJuniorJobsCalifornia(jobs);
+//        getJuniorJobsCalifornia(jobs);
+
+        formatJobDateDemo(jobs);
+    }
+
+    // Function Composition
+    private static void formatJobDateDemo(List<Job> jobs) {
+        Function<String, LocalDateTime> indeedDateConverter =
+                dateString -> LocalDateTime.parse(
+                        dateString,
+                        DateTimeFormatter.RFC_1123_DATE_TIME);
+
+        Function<LocalDateTime, String> siteDateStringConverter =
+                date -> date.format(DateTimeFormatter.ofPattern("M / d / YY"));
+
+        Function<String, String> indeedToSiteDateStringConverter =
+                indeedDateConverter.andThen(siteDateStringConverter);
+
+        jobs.stream()
+                .map(Job::getDateTimeString)
+                .map(indeedToSiteDateStringConverter)
+                .limit(5)
+                .forEach(System.out::println);
     }
 
     // Higher Order Function
