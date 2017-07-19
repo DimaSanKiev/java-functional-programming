@@ -69,7 +69,31 @@ public class App {
 
 //        getJuniorJobsCalifornia(jobs);
 
-        formatJobDateDemo(jobs);
+//        formatJobDateDemo(jobs);
+
+        closuresDemo(jobs);
+    }
+
+    private static void closuresDemo(List<Job> jobs) {
+        Function<String, String> converter = createDateStringConverter(
+                DateTimeFormatter.RFC_1123_DATE_TIME,
+                DateTimeFormatter.ISO_DATE
+        );
+        jobs.stream()
+                .map(Job::getDateTimeString)
+                .map(converter)
+                .limit(5)
+                .forEach(System.out::println);
+    }
+
+    public static Function<String, String> createDateStringConverter(
+            DateTimeFormatter inFormatter,
+            DateTimeFormatter outFormatter) {
+        int meaningOfLife = 42;
+        return dateString -> {
+            return meaningOfLife + "-----" + LocalDateTime.parse(dateString, inFormatter)
+                    .format(outFormatter);
+        };
     }
 
     // Function Composition
